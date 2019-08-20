@@ -1,0 +1,32 @@
+#!/bin/sh
+
+set -e
+
+test "$#" = 1 || {
+	echo >&2 'usage: new-project PROJECT_NAME [TEMPLATE]'
+	echo >&2 '  Create a new project directory.'
+	echo >&2
+	echo >&2 '  Templates follow the following conventions:'
+	echo >&2 '    PROJECT_NAME/src/      Source code directory.'
+	echo >&2 '    PROJECT_NAME/docs/     Documentation directory.'
+	echo >&2 '    PROJECT_NAME/README    The projects readme file.'
+	echo >&2 '    PROJECT_NAME/dev       A development script.'
+	exit 1
+}
+
+templates_dir="${0%/*}/project-templates"
+project_name="$1"
+template="${2:-default}"
+template_dir="$templates_dir/$template"
+
+test -e "$project_name" && {
+	echo >&2 "$project_name already exists"
+	exit 1
+}
+
+test -e "$template_dir" || {
+	echo >&2 "template $template not found"
+	exit 1
+}
+
+cp -r "$template_dir" "$project_name"

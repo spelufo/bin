@@ -1,0 +1,12 @@
+{ :paths [
+    "src"
+  ]
+  :deps {
+    org.clojure/clojurescript {:mvn/version "1.10.520"}
+  }
+  :aliases {
+    :cljs  {:main-opts ["-m" "cljs.main"]}
+    :repl  {:main-opts ["-m" "cljs.main" "--repl"]}
+    :build {:main-opts ["-m" "cljs.main" "--compile" "sandbox.core"]}
+    :watch {:main-opts ["-m" "cljs.main" "--watch" "src" "--compile" "sandbox.core"]}
+  }}

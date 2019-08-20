@@ -1,0 +1,33 @@
+#!/bin/sh
+
+set -e
+
+commands='help build'
+
+help() {
+	echo >&2 'usage: ./dev COMMAND [OPTIONS...]'
+	echo >&2 "  available commands: $commands"
+}
+
+build() {
+	shift  # remove the command name from $@
+	# write code to build your project
+}
+
+die() {
+	help
+	exit 1
+}
+
+test "$#" -ge 1 || die
+
+command="$1"
+found_command=false
+for c in $commands; do
+	test "$c" = "$command" && {
+		found_command=true
+		"$c" "$@"
+	}
+done
+
+test "$found_command" = true || die

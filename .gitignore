@@ -1,0 +1,16 @@
+# Ignore everything by default
+/*
+
+
+# Exceptions: Track these files.
+
+!/.gitignore
+!/README.md
+
+# Bare bones project templates.
+!/new-project
+!/project-templates
+
+# Clojurescript command. Clj/clojure wrapper.
+!/cljs
+!/cljs-node
