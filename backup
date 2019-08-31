@@ -1,0 +1,55 @@
+#!/bin/sh
+
+set -e
+
+test "$#" -ge 2 || {
+	echo >&2 'usage: backup DIR DEST [ROOT]'
+	echo >&2 '  Make a backup of DIR in DEST/DATE/PATH, where:'
+	echo >&2 "    * DATE is the today's date in the format YYYY-MM-DD."
+	echo >&2 '    * PATH is the path to DIR relative to ROOT (ROOT defaults to /).'
+	echo >&2
+	echo >&2 '  If there are previous backups in DEST, unmodified files will be'
+	echo >&2 '  hard linked to the latest backup.'
+	exit 1
+}
+
+dest="$2"
+today="$(date -I)"
+root="${3:-/}"
+dir="$(realpath --relative-base="$root" "$1")"
+
+
+# Find the last backup of $dir, to hard link if possible.
+for backup in "$dest"/[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]; do
+	test -d "$backup/$dir" && test "$(basename "$backup")" != "$today" && {
+		last=$backup
+	}
+done
+
+test -n "$last" && {
+	echo 'Hard linking last backup found at '"$last/$dir"
+	mkdir -p "$dest/$today/$dir"
+	cp -alTn "$last/$dir" "$dest/$today/$dir"
+}
+
+test -n "$last" || {
+	echo 'No previous backups of '"$dir"
+}
+
+
+echo 'Syncing...'
+rsync -aRF --delete-excluded --delete --info=progress2 "$root/./$dir" "$dest/$today"
+
+
+# Notes
+
+# Copying $src to $dest might mean:
+#   - "make $dest = $src" or "copy to"
+#   - "make $dest/$src = $src" or "copy into"
+
+# cp will "copy into" if the destination exists and is a directory.
+# Otherwise it will "copy to" it, even overwriting the target if is is a regular file.
+# The -T flag says to always "copy to".
+
+# rsync will "copy to" if the source argument has a trailing slash.
+# If it doesn't rsync will "copy into".

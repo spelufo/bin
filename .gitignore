@@ -7,6 +7,9 @@
 !/.gitignore
 !/README.md
 
+# Backup script
+!/backup
+
 # Bare bones project templates.
 !/new-project
 !/project-templates
