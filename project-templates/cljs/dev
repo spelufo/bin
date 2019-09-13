@@ -29,15 +29,15 @@ die() {
 	exit 1
 }
 
-test "$#" -ge 1 || die
+[ "$#" -ge 1 ] || die
 
 command="$1"
 found_command=false
 for c in $commands; do
-	test "$c" = "$command" && {
+	[ "$c" = "$command" ] && {
 		found_command=true
 		"$c" "$@"
 	}
 done
 
-test "$found_command" = true || die
+[ "$found_command" = true ] || die
