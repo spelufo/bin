@@ -1,0 +1,52 @@
+#!/bin/sh
+
+set -e
+
+commands='help build test fmt example'
+
+help() {
+	echo >&2 'usage: ./dev COMMAND [OPTIONS...]'
+	echo >&2 "  available commands: $commands"
+}
+
+build() {
+	go build ./pkg/...
+}
+
+test() {
+	go test ./pkg/...
+}
+
+fmt() {
+	go fmt ./pkg/...
+}
+
+example() {
+	shift
+	[ "$#" -ge 1 ] || {
+		echo >&2 'usage: ./dev example EXAMPLE'
+		echo >&2 '  build and run an example from the examples directory'
+		exit 1
+	}
+	build &&
+	go build -o "$1" "./examples/$1.go" &&
+	"./$1"
+}
+
+die() {
+	help
+	exit 1
+}
+
+[ "$#" -ge 1 ] || die
+
+command="$1"
+found_command=false
+for c in $commands; do
+	[ "$c" = "$command" ] && {
+		found_command=true
+		"$c" "$@"
+	}
+done
+
+[ "$found_command" = true ] || die
