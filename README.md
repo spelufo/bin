@@ -10,6 +10,23 @@ use `/opt` but at the user level: to install standalone programs. I then symlink
 the binary into `~/bin`. These symlinks are not tracked.
 
 
+## shell dotfiles
+
+I keep `.bashrc` and `.inputrc` in here and make symlinks to them in `$HOME`.
+
+
+## `doc`
+
+A wrapper to search for documentation, so I don't have to remember different
+commands and man sections.
+
+```
+usage: doc [CATEGORY] [OPTIONS...]
+  Search for documentation. Wraps `help`, `go doc`, `man`, etc.
+  Uses CATEGORY to know where to search.
+  Falls back to man pages if CATEGORY is not recognized.
+```
+
 ## `new-project`
 
 This script copies directories from `project-templates` to scaffold a new

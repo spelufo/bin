@@ -1,0 +1,49 @@
+#!/bin/sh
+
+set -e
+
+test "$#" != 0 || {
+	echo >&2 'usage: doc [CATEGORY] [OPTIONS...]'
+	echo >&2 '  Search for documentation. Wraps `help`, `go doc`, `man`, etc.'
+	echo >&2 '  Uses CATEGORY to know where to search.'
+	echo >&2 '  Falls back to man pages if CATEGORY is not recognized.'
+	exit 1
+}
+
+
+# shell
+
+test "$1" = sh -o "$1" = shell && {
+	shift
+	help "$@"
+	exit
+}
+
+
+# go
+
+test "$1" = go && {
+	shift
+	exec go doc "$@"
+}
+
+
+# man
+
+sections=''
+test "$1" = all               && sections='1,8,3,0,2,5,4,9,6,7'
+test "$1" = cmd -o "$1" = bin && sections='8,1,6'
+test "$1" = c   -o "$1" = lib && sections='3,0'
+test "$1" = x   -o "$1" = x11 && sections='x'
+test "$1" = tk  -o "$1" = tcl && sections='n'
+test "$1" = posix             && sections='1P,8P,3P,0P,2P,5P,4P,9P,6P,7P'
+test "$1" = file              && sections='4,5'
+test "$1" = config            && sections='5'
+test "$1" = dev               && sections='4'
+test "$1" = syscall           && sections='2,9'
+test "$1" = sys               && sections='2'
+
+test -n "$sections" && shift
+test -z "$sections" && sections='1,8,3,0,2,5,4,9,6,7'
+
+MANSECT="$sections" man "$@"

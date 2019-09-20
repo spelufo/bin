@@ -7,6 +7,13 @@
 !/.gitignore
 !/README.md
 
+# Shell dotfiles
+!/.bashrc
+!/.inputrc
+
+# Documentation
+!/doc
+
 # Backup script
 !/backup
 
