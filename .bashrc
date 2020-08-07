@@ -1,13 +1,16 @@
 export PS1=$'\n \[\x1b[33;1m\]\$\[\x1b[0m\] '
 
-export GOPATH=~/code/go
+export GOPATH=~/.go
 export GO111MODULE=on
+export VIRTUAL_ENV_DISABLE_PROMPT=on
+export npm_config_prefix=~/.node_modules
+export HH=~/.houdini17.5-home
 export HOUDINI_USER_PREF_DIR=~/.houdini17.5
 export OPAM_SWITCH_PREFIX=~/.opam/default
 export CAML_LD_LIBRARY_PATH=~/.opam/default/lib/stublibs:/usr/lib/ocaml/stublibs:/usr/lib/ocaml
 export OCAML_TOPLEVEL_PATH=~/.opam/default/lib/toplevel
 
-export PATH="~/bin:/usr/bin:$GOPATH/bin:$OPAM_SWITCH_PREFIX/bin"
+export PATH="~/bin:/usr/bin:$GOPATH/bin:$npm_config_prefix/bin:~/.gem/ruby/2.7.0/bin:$OPAM_SWITCH_PREFIX/bin"
 export HISTCONTROL=ignoreboth
 export EDITOR='subl -n -w'
 export PAGER=less  # psql will use more otherwise

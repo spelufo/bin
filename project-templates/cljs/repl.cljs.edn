@@ -1,0 +1,4 @@
+;; See: https://figwheel.org/tutorial
+^{:watch-dirs ["src"]
+  :css-dirs ["resources/public/css"]}
+{:main project.main}

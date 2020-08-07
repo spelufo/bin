@@ -1,0 +1,69 @@
+#!/bin/env python3
+
+import sys
+import urllib.request as request
+
+def domain_from_line(line):
+    return line
+
+def domain_from_hosts_file_line(line):
+    if line.startswith('#'):
+        return
+    parts = line.split()
+    if len(parts) < 2:
+        return
+    return parts[1]
+
+generated_start_line = '# Start make-hosts generated'
+
+sources = [
+    {'name': 'StevenBlack',
+     'url': 'https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts',
+     'extract_domain': domain_from_hosts_file_line,
+     'skip_to': '# Start StevenBlack'},
+    {'name': 'malwaredomains.com',
+     'url': 'https://mirror1.malwaredomains.com/files/justdomains',
+     'extract_domain': domain_from_line},
+]
+
+def make_hosts():
+    blacklist = set()
+    domains = []
+    for source in sources:
+        url = source['url']
+        name = source['name']
+        extract_domain = source['extract_domain']
+        skip_to = source.get('skip_to')
+        started = not skip_to
+        n_domains = 0
+        n_new_domains = 0
+        with request.urlopen(url) as response:
+            for line in response:
+                line = line.decode('utf-8').strip()
+                if skip_to and line.startswith(skip_to):
+                    started = True
+                if started:
+                    domain = extract_domain(line)
+                    if domain:
+                        n_domains += 1
+                        if domain not in blacklist:
+                            n_new_domains += 1
+                            blacklist.add(domain)
+                            domains.append(domain)
+        sys.stderr.write(f'{n_domains} domains ({n_new_domains} new) from source {name}\n')
+
+    with open('/etc/hosts', 'r') as f:
+        for line in f:
+            if line.startswith(generated_start_line):
+                break
+            sys.stdout.write(line)
+    
+    sys.stdout.write(generated_start_line)
+    sys.stdout.write('\n\n')
+
+    for domain in domains:
+        sys.stdout.write(f'0.0.0.0\t{domain}\n')
+
+
+if __name__ == '__main__':
+    make_hosts()

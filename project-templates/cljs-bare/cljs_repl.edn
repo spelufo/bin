@@ -1,0 +1,13 @@
+{ ; compiler options
+  :main "main.main"
+  :optimizations :none
+  :output-to "resources/dev/cljs/main.js"
+  :output-dir "resources/dev/cljs/"
+  :asset-path "cljs"
+  
+  ; repl options
+  :analyze-path "src"
+  :watch "src"
+  :static-dir ["resources/dev/"]
+  :repl-verbose true
+}

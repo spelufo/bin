@@ -66,3 +66,9 @@ This are just wrappers around the `clj`/`clojure` command, that add clojurescrip
 the java classpath, and run the `cljs.main` namespace. It is useful to try things
 in clojurescript without setting up a project. `cljs` starts a browser repl and
 `cljs-node` starts a node repl.
+
+
+## `make-hosts`
+
+Generate a hosts file from the current /etc/hosts and a list of blacklist sources
+in the script.

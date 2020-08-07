@@ -24,3 +24,6 @@
 # Clojurescript command. Clj/clojure wrapper.
 !/cljs
 !/cljs-node
+
+# Hosts file generation script
+!/make-hosts

@@ -28,6 +28,14 @@ test "$1" = go && {
 }
 
 
+# rust
+
+test "$1" = rust && {
+	shift
+	exec rustup doc "$@"
+}
+
+
 # man
 
 sections=''

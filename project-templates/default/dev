@@ -1,33 +1,20 @@
-#!/bin/sh
+#!/bin/env python3
 
-set -e
+import os
+import sys
 
-commands='help build'
 
-help() {
-	echo >&2 'usage: ./dev COMMAND [OPTIONS...]'
-	echo >&2 "  available commands: $commands"
-}
+def build(*extra_args):
+    # cmdline = 'your build command'.split()
+    # os.execvp(cmdline[0], cmdline + list(extra_args))
+    raise NotImplementedError
 
-build() {
-	shift  # remove the command name from $@
-	# write code to build your project
-}
+if __name__ == '__main__':
+    _, command_name, *args = sys.argv
+    command = globals().get(command_name)
+    
+    if not command:
+        print(f'error: no command named {command_name}', file=sys.stderr)
+        exit(1)
 
-die() {
-	help
-	exit 1
-}
-
-[ "$#" -ge 1 ] || die
-
-command="$1"
-found_command=false
-for c in $commands; do
-	[ "$c" = "$command" ] && {
-		found_command=true
-		"$c" "$@"
-	}
-done
-
-[ "$found_command" = true ] || die
+    command(*args)

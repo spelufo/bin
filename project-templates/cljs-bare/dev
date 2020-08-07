@@ -1,0 +1,55 @@
+#!/bin/sh
+
+set -e
+
+commands='help repl build watch build_pro watch_pro clean'
+
+help() {
+	echo >&2 'usage: ./dev COMMAND [OPTIONS...]'
+	echo >&2 "  available commands: $commands"
+}
+
+repl() {
+	clojure -A:build
+	exec clj -A:repl "$@"
+}
+
+build() {
+	exec clojure -A:build "$@"
+}
+
+build_pro() {
+	exec clojure -A:build-pro "$@"
+}
+
+watch() {
+	exec clojure -A:watch "$@"
+}
+
+watch_pro() {
+	exec clojure -A:watch-pro "$@"
+}
+
+clean() {
+	rm -rf resources/dev/cljs/*
+	rm -rf resources/pro/cljs/*
+}
+
+die() {
+	help
+	exit 1
+}
+
+[ "$#" -ge 1 ] || die
+
+command="$1"
+found_command=false
+for c in $commands; do
+	[ "$c" = "$command" ] && {
+		found_command=true
+		shift
+		"$c" "$@"
+	}
+done
+
+[ "$found_command" = true ] || die

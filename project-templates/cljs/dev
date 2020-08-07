@@ -1,43 +1,23 @@
-#!/bin/sh
+#!/bin/env python3
 
-set -e
+import os
+import sys
 
-commands='help repl build watch'
 
-help() {
-	echo >&2 'usage: ./dev COMMAND [OPTIONS...]'
-	echo >&2 "  available commands: $commands"
-}
+def build():
+    raise NotImplementedError
 
-repl() {
-	shift
-	exec clj -A:repl
-}
+def repl(*extra_args):
+    cmdline = 'clj -Afig -m figwheel.main --build repl --repl'.split()
+    os.execvp(cmdline[0], cmdline + list(extra_args))
 
-build() {
-	shift
-	exec clojure -A:build
-}
 
-watch() {
-	shift
-	exec clojure -A:watch
-}
+if __name__ == '__main__':
+    _, command_name, *args = sys.argv
+    command = globals().get(command_name)
+    
+    if not command:
+        print(f'error: no command named {command_name}', file=sys.stderr)
+        exit(1)
 
-die() {
-	help
-	exit 1
-}
-
-[ "$#" -ge 1 ] || die
-
-command="$1"
-found_command=false
-for c in $commands; do
-	[ "$c" = "$command" ] && {
-		found_command=true
-		"$c" "$@"
-	}
-done
-
-[ "$found_command" = true ] || die
+    command(*args)

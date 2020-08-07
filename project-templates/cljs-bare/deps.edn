@@ -1,0 +1,15 @@
+{ :paths [
+    "src"
+  ]
+  :deps {
+    org.clojure/clojurescript {:mvn/version "1.10.520"}
+  }
+  :aliases {
+    :cljs  {:main-opts ["-m" "cljs.main" "-co" "cljsc.dev.edn"]}
+    :repl  {:main-opts ["-m" "cljs.main" "-ro" "cljs_repl.edn" "--repl" ]}
+    :build {:main-opts ["-m" "cljs.main" "-co" "cljsc.dev.edn" "--compile" "main.main"]}
+    :watch {:main-opts ["-m" "cljs.main" "-co" "cljsc.dev.edn" "--watch" "src" "--compile" "main.main"]}
+    :cljs-pro  {:main-opts ["-m" "cljs.main" "-co" "cljsc.pro.edn"]}
+    :build-pro {:main-opts ["-m" "cljs.main" "-co" "cljsc.pro.edn" "--compile" "main.main"]}
+    :watch-pro {:main-opts ["-m" "cljs.main" "-co" "cljsc.pro.edn" "--watch" "src" "--compile" "main.main"]}
+  }}

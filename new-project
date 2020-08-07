@@ -2,7 +2,7 @@
 
 set -e
 
-test "$#" = 1 || {
+test "$#" -ge 1 || {
 	echo >&2 'usage: new-project PROJECT_NAME [TEMPLATE]'
 	echo >&2 '  Create a new project directory.'
 	echo >&2

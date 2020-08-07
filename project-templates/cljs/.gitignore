@@ -1,13 +1,3 @@
-/out
+/.trash
+/.cpcache
 /target
-/classes
-/checkouts
-pom.xml
-pom.xml.asc
-*.jar
-*.class
-/.lein-*
-/.nrepl-port
-.cpcache
-\.\#*
-\#*

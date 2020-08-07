@@ -1,0 +1,8 @@
+;; https://clojurescript.org/reference/compiler-options
+
+{ :main "main.main"
+  :optimizations :advanced
+  :output-to "resources/pro/cljs/main.js"
+  :output-dir "resources/pro/cljs/"
+  :asset-path "cljs"
+}

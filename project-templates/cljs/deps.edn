@@ -1,12 +1,12 @@
-{ :paths [
-    "src"
-  ]
+{ :paths ["src" "resources"]
   :deps {
-    org.clojure/clojurescript {:mvn/version "1.10.520"}
-  }
+    org.clojure/clojure {:mvn/version "1.10.1"}
+    org.clojure/clojurescript {:mvn/version "1.10.758"}
+    org.clojure/core.async {:mvn/version "1.2.603"}
+    doh {:local/root "../doh"}}
   :aliases {
-    :cljs  {:main-opts ["-m" "cljs.main"]}
-    :repl  {:main-opts ["-m" "cljs.main" "--repl"]}
-    :build {:main-opts ["-m" "cljs.main" "--compile" "sandbox.core"]}
-    :watch {:main-opts ["-m" "cljs.main" "--watch" "src" "--compile" "sandbox.core"]}
-  }}
+    :fig {
+      :extra-deps {
+        com.bhauman/figwheel-main {:mvn/version "0.2.9"}
+        com.bhauman/rebel-readline-cljs {:mvn/version "0.1.4"}}
+      :extra-paths ["target"]}}}
